@@ -1,12 +1,15 @@
 package rest;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+
+import jdk.jshell.spi.ExecutionControl;
 import webscraper.TagCounter;
 import webscraper.Tester;
 import webscraper.TagDTO;
@@ -33,8 +36,11 @@ public class WebScraperResource {
     @Path("parallel")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getTagsParrallel() {
-        return "[Make me return results, fetched by a parrallel strategy";
+    public String getTagsParrallel() throws ExecutionControl.NotImplementedException, ExecutionException, InterruptedException {
+        long startTime = System.nanoTime();
+        List<TagCounter> dataFeched = Tester.runParrallel();
+        long endTime = System.nanoTime()-startTime;
+        return TagDTO.getTagsAsJson("Parallel fetching",dataFeched, endTime);
     }
     
     

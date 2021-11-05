@@ -39,6 +39,7 @@ public class TagCounter {
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
+
   }
 
   public String getUrl(){
